@@ -30,12 +30,14 @@ export guiku='
 	</comboboxentry>
 	</hbox>
 	
-	<button>
+	<hbox space-expand="true" space-fill="true">
+	<button xalign="0">
 		<label>reset to All monitor</label>
 		<action>reset</action>
 	</button>
 
 	<button ok></button>
+	</hbox>
 </vbox>'
 
 gtkdialog -p guiku
