@@ -1,0 +1,41 @@
+#!/bin/bash
+# make veikk a50 only on a monitor in dual monitor
+
+# list semua monitor
+ganti(){
+	veikk_id=$(xinput |grep "VEIKK".*pointer|cut -f2|cut -c 4-5|head -1)
+	#echo "$veikk_id"
+	xsetwacom --set "$veikk_id" MapToOutput $cbMonitor
+}
+export -f ganti
+# reset
+reset(){
+	veikk_id=$(xinput |grep "VEIKK".*pointer|cut -f2|cut -c 4-5|head -1)
+	AllMonitors=$(xrandr|grep current|awk '{print $8$9$10"+0+0"}'|sed 's/,//')
+	xsetwacom --set "$veikk_id" MapToOutput $AllMonitors
+}
+export -f reset
+
+export guiku='
+<vbox>
+	<hbox>
+	<text>
+		<label>Monitors avaliable:</label>
+	</text>
+	
+	<comboboxentry active="0">
+		<variable>cbMonitor</variable>
+		<input>xrandr|grep " connected"|cut -d" " -f1</input>
+		<action>ganti</action>
+	</comboboxentry>
+	</hbox>
+	
+	<button>
+		<label>reset to All monitor</label>
+		<action>reset</action>
+	</button>
+
+	<button ok></button>
+</vbox>'
+
+gtkdialog -p guiku
